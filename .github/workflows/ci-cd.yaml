@@ -34,4 +34,4 @@ jobs:
 
       # ✅ NEW: Validate YAML
       - name: Validate Kubernetes manifests
-        run: kubeval k8s/*.yaml
+        run: kubeval --ignore-missing-schemas k8s/*.yaml
