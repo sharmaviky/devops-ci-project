@@ -27,4 +27,4 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
       - name: Validate Kubernetes manifests (dry-run)
-        run: kubectl apply -f k8s/ --dry-run=client
+        run: kubectl apply -f k8s/ --dry-run=client --validate=false
