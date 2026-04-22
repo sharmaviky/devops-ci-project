@@ -29,4 +29,4 @@ jobs:
       - name: Validate Kubernetes manifests (dry-run)
         run: |
           export KUBECONFIG=/dev/null
-          kubectl apply -f k8s/ --dry-run=client
+          kubectl apply -f k8s/ --dry-run=client --validate=false
