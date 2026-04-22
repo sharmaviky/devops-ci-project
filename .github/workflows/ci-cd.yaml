@@ -5,15 +5,18 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: docker build -t devops-app .
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Test step
-      run: echo "Pipeline running successfully"
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-app:latest .
+
+    - name: Push Docker image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/devops-app:latest
