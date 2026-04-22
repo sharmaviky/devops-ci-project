@@ -21,11 +21,17 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/devops-app:latest
 
-      - name: Set kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+      # 🔥 REMOVE kubectl validation (ye galat tha)
+      # - name: Validate Kubernetes manifests
+      #   run: kubectl create --dry-run=client -f k8s/
 
-      - name: Validate Kubernetes manifests
+      # ✅ NEW: Install kubeval
+      - name: Install kubeval
         run: |
-          kubectl create --dry-run=client -f k8s/
+          curl -LO https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+          tar -xvf kubeval-linux-amd64.tar.gz
+          sudo mv kubeval /usr/local/bin/
+
+      # ✅ NEW: Validate YAML
+      - name: Validate Kubernetes manifests
+        run: kubeval k8s/*.yaml
